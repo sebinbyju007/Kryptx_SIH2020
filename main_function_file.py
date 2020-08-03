@@ -1,12 +1,19 @@
 import cv2
 import yolo_object_detection_file
 import full_text_detection_file
+import currency_identifier_new_file
+import sign_board_detection_file
+import medicine_remainder_file
+import medicine_detection_file
 class MainFunction:
     def __init__(self):
         self.yolo_object_detection = yolo_object_detection_file.Yolo_object_detection()
         # self.q = list()
         self.fullTextDetection = full_text_detection_file.FullTextDetection()
-
+        self.currencyIdentifier = currency_identifier_new_file.CurrencyIdentifier()
+        self.signBoardDetection = sign_board_detection_file.SignBoardDetection()
+        self.medicineDetection = medicine_detection_file.MedicineDetection()
+        
 
     
 
@@ -23,7 +30,32 @@ class MainFunction:
                     return self.fullTextDetection.detectText()
                 except :
                     return 'No text Found or Image Not Clear'
+        elif val == 2:
+            cv2.imwrite('image.jpg',img)
+            try:
+                return self.currencyIdentifier.identify_currency()
+            except:
+                return 'No text Found or Image Not Clear'
+        elif val== 4:
+            cv2.imwrite('image.jpg',img)
+            try:
+                return self.signBoardDetection.classify('image.jpg')
+            except:
+                return 'No signal Found or Image Not Clear'
+        elif val == 3:
+            cv2.imwrite('image.jpg',img)
+            try:
+                return self.medicineDetection.detect_largest_text()+' tablet'
+            except :
+                return 'No text Found or Image Not Clear'
         
+        elif val == 5:
+            try:
+                return medicine_remainder_file.alarmTrigger()
+            except:
+                return 'No output'
+
+
         else:
 
             # objects = self.yolo_object_detection.detect_objects(frame)
