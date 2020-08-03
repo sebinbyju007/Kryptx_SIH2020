@@ -17,7 +17,7 @@ value=0
 Run=1
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('192.168.0.106', 8485))
+client_socket.connect(('192.168.43.39', 8485))
 connection = client_socket.makefile('wb')
 
 # cam.set(3, 1200)
@@ -28,17 +28,13 @@ img_counter = 0
 def on_press(key):
     global value
     if hasattr(key,'char'):
-        if key.char == 'r':
-            #speech()
-            value=1
+        if key.char == 'c': 
+            speech()
         elif  key.char == 'q':
             client_socket.close()
             cam.release()
             return False
-        elif key.char=='c':
-            value=2
-        elif key.char =='i':
-            value=3
+
     print(value)
     
 
@@ -65,6 +61,16 @@ def speech():
             elif 'identify' in a:
                 value=3
                 print("value is %d"%value)
+            elif 'medicine' in a:
+                value = 6
+                print("value is %d"%value)
+            elif 'good night' in a:
+                value = 7
+                print("value is %d"%value)
+            elif 'sign board' in a:
+                value = 4
+                print("value is %d"%value)
+
         except sr.RequestError:
             print('RequestError')
         except sr.UnknownValueError:
@@ -77,7 +83,7 @@ def camera(client_socket,Run):
     global value
     while Run==1:
         try:
-            cam = cv2.VideoCapture(1)
+            cam = cv2.VideoCapture(0)
             ret, frame = cam.read()
             result, frame = cv2.imencode('.jpg', frame, encode_param)
         #    data = zlib.compress(pickle.dumps(frame, 0)
