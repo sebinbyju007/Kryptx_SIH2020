@@ -26,7 +26,7 @@ print('Socket now listening')
 engine.say('Started')
 engine.runAndWait()
 conn,addr=s.accept()
-
+variable = True
 data = b""
 payload_size = struct.calcsize(">L")
 print("payload_size: {}".format(payload_size))
@@ -38,6 +38,10 @@ while True:
             #     raise Exception('Client connection loss')
             data += conn.recv(4096)
         print("Done Recv: {}".format(len(data)))
+        if variable:
+            engine.say('Good Morning Royal')
+            engine.runAndWait()
+            variable = False
         packed_msg_size = data[:payload_size]
         data = data[payload_size:]
         msg_size = struct.unpack(">L", packed_msg_size)[0]
